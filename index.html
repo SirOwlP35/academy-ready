@@ -1,0 +1,744 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Academy Ready</title>
+<meta name="theme-color" content="#13223B">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Academy">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#E8EDF1; --surface:#F8FAFB; --ink:#13223B; --muted:#56677C; --line:#C9D3DC;
+  --brass:#A77A12; --brass-soft:#E9D9A8; --navy:#1E3A66;
+  --low:#B8322A; --high:#B96A00; --ok:#2B7355;
+  --display:"Barlow Condensed","Arial Narrow",Impact,sans-serif;
+  --body:"Public Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1623; --surface:#172233; --ink:#E4EAF2; --muted:#93A3B7; --line:#27364C;
+    --brass:#D9AE45; --brass-soft:#4A3C17; --navy:#9DB8E6; --low:#F07167; --high:#F2A541; --ok:#5CC49A;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1623; --surface:#172233; --ink:#E4EAF2; --muted:#93A3B7; --line:#27364C;
+  --brass:#D9AE45; --brass-soft:#4A3C17; --navy:#9DB8E6; --low:#F07167; --high:#F2A541; --ok:#5CC49A;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100%;background:var(--paper);color:var(--ink);font:16px/1.5 var(--body);-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--brass);outline-offset:2px}
+.wrap{max-width:640px;margin:0 auto;padding:18px 18px 110px}
+header.top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
+.brand{font:700 26px/1 var(--display);letter-spacing:.02em}
+.brand span{color:var(--brass)}
+.date{color:var(--muted);font-size:14px}
+h2{font:700 30px/1.05 var(--display);margin:6px 0 14px}
+h3{font:600 20px/1.2 var(--display);margin:0 0 8px;letter-spacing:.01em}
+p{margin:0 0 10px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+.panel.flat{background:transparent;border-style:dashed}
+.row{display:flex;gap:10px;align-items:center}
+.between{justify-content:space-between}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{appearance:none;border:0;border-radius:10px;padding:11px 16px;font-weight:600;cursor:pointer;background:var(--ink);color:var(--paper)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.brass{background:var(--brass);color:#1a1300}
+.btn.sm{padding:7px 12px;font-size:14px}
+.btn:disabled{opacity:.5;cursor:default}
+.big{font:700 44px/1 var(--display)}
+.stat{font:600 28px/1 var(--display)}
+.label{font-size:13px;color:var(--muted)}
+/* hero badge */
+.hero{display:grid;grid-template-columns:116px 1fr;gap:16px;align-items:center}
+.shield{width:116px;height:auto;display:block}
+.shield .fill{transition:transform 1.4s cubic-bezier(.2,.8,.2,1)}
+@media (prefers-reduced-motion:reduce){.shield .fill{transition:none}}
+.bar{height:8px;border-radius:5px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--brass);border-radius:5px}
+.bar.carb i{background:var(--navy)}
+.ev{display:grid;grid-template-columns:64px 1fr 46px;gap:8px;align-items:center;font-size:14px;margin:6px 0}
+.ev b{font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+/* lists */
+.item{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.item:first-child{border-top:0}
+.item .x{background:none;border:0;color:var(--muted);cursor:pointer;padding:2px 6px;font-size:18px;line-height:1}
+.gv{font:600 22px/1 var(--display);font-variant-numeric:tabular-nums}
+.gv.low{color:var(--low)} .gv.high{color:var(--high)} .gv.in{color:var(--ok)}
+.tag{display:inline-block;font-size:12px;padding:2px 8px;border-radius:20px;border:1px solid var(--line);color:var(--muted)}
+/* sessions */
+.sess{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--line)}
+.sess:first-of-type{border-top:0}
+.check{flex:0 0 auto;width:30px;height:30px;border-radius:50%;border:2px solid var(--line);background:transparent;cursor:pointer;display:grid;place-items:center;margin-top:2px}
+.check.on{background:var(--ok);border-color:var(--ok);color:#fff}
+.sess.done .what{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line)}
+.kind{font:600 17px/1.2 var(--display)}
+.weeknav{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.weeknav .btn{min-width:44px}
+.week-strip{display:grid;grid-template-columns:repeat(16,1fr);gap:3px;margin:10px 0 4px}
+.week-strip i{height:18px;border-radius:3px;background:var(--line)}
+.week-strip i.part{background:var(--brass-soft)}
+.week-strip i.full{background:var(--brass)}
+.week-strip i.cur{outline:2px solid var(--ink);outline-offset:1px}
+/* chart */
+.chart{width:100%;height:auto;display:block}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:8px 6px;border-top:1px solid var(--line);white-space:nowrap}
+th{font-weight:600;color:var(--muted);border-top:0}
+/* tabs */
+nav.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
+nav.tabs .in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(6,1fr)}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px;margin-bottom:14px}
+.seg button{border:0;background:transparent;padding:10px;border-radius:9px;font:600 17px/1 var(--display);cursor:pointer;color:var(--muted)}
+.seg button[aria-selected="true"]{background:var(--ink);color:var(--paper)}
+.q{font:600 24px/1.2 var(--display);margin:16px 0 14px}
+.a{border-top:1px solid var(--line);padding-top:12px;font-size:16px}
+.cite{font-size:13px;color:var(--brass);margin-top:8px;font-weight:600}
+details{border-top:1px solid var(--line);padding:10px 0}
+details:first-of-type{border-top:0}
+summary{cursor:pointer;display:flex;justify-content:space-between;gap:8px;list-style:none}
+summary::-webkit-details-marker{display:none}
+.gq{font-weight:600;margin:12px 0 2px}
+.ga{font-size:14px;color:var(--muted)}
+nav.tabs button{background:none;border:0;padding:10px 0 9px;cursor:pointer;color:var(--muted);font:600 13px/1 var(--display);letter-spacing:.03em;display:flex;flex-direction:column;align-items:center;gap:4px}
+nav.tabs button svg{width:22px;height:22px}
+nav.tabs button[aria-current="page"]{color:var(--ink)}
+nav.tabs button[aria-current="page"] svg{color:var(--brass)}
+section[hidden]{display:none}
+/* forms */
+dialog{border:0;border-radius:18px 18px 0 0;padding:0;width:100%;max-width:640px;margin:auto auto 0;background:var(--surface);color:var(--ink);max-height:92%}
+dialog::backdrop{background:rgba(8,14,24,.55)}
+dialog form{padding:20px 18px calc(20px + env(safe-area-inset-bottom,0px))}
+label.f{display:block;font-size:14px;font-weight:600;margin:12px 0 5px}
+input[type=text],input[type=number],input[type=date],input[type=time],select,textarea{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--paper)}
+textarea{min-height:64px;resize:vertical}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips label{cursor:pointer}
+.chips input{position:absolute;opacity:0;pointer-events:none}
+.chips span{display:inline-block;padding:7px 12px;border-radius:20px;border:1px solid var(--line);font-size:14px}
+.chips input:checked+span{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.chips input:focus-visible+span{outline:3px solid var(--brass);outline-offset:2px}
+.qa{display:flex;flex-wrap:wrap;gap:6px}
+.qa button{border:1px solid var(--line);background:var(--paper);border-radius:20px;padding:6px 12px;font-size:14px;cursor:pointer}
+.actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:10}
+.toast.show{opacity:1}
+.note{font-size:13px;color:var(--muted);border-left:3px solid var(--brass);padding-left:10px;margin-top:10px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal .h{font-size:12px;color:var(--muted);text-align:center}
+.cal button{aspect-ratio:1;border:1px solid var(--line);border-radius:8px;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font:600 16px/1 var(--display);padding:0;color:var(--ink)}
+.cal button small{font:500 9px/1 var(--body);color:var(--muted)}
+.cal button.work{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.cal button.work small{color:var(--paper);opacity:.75}
+.cal button.today{outline:2px solid var(--brass);outline-offset:1px}
+.cal button.past{opacity:.4}
+.glasses{display:flex;gap:5px;flex-wrap:wrap;margin:8px 0 12px}
+.glasses i{width:15px;height:24px;border:2px solid var(--navy);border-radius:2px 2px 6px 6px}
+.glasses i.on{background:var(--navy)}
+.rem{display:grid;grid-template-columns:134px 1fr 30px;gap:8px;align-items:center;margin:6px 0}
+.rem .x{background:none;border:0;color:var(--muted);cursor:pointer;font-size:20px}
+@media (max-width:380px){.hero{grid-template-columns:104px 1fr}.shield{width:104px}.big{font-size:38px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">Academy <span>Ready</span></div>
+    <div class="date" id="hdrDate"></div>
+  </header>
+
+  <section id="v-today"></section>
+  <section id="v-train" hidden></section>
+  <section id="v-sugar" hidden></section>
+  <section id="v-food" hidden></section>
+  <section id="v-study" hidden></section>
+  <section id="v-more" hidden>
+    <div class="seg" role="tablist"><button role="tab" data-sub="sched" aria-selected="true">Schedule</button><button role="tab" data-sub="goals" aria-selected="false">Goals & tests</button></div>
+    <div id="v-sched"></div><div id="v-goals" hidden></div>
+  </section>
+</div>
+
+<nav class="tabs" aria-label="Sections"><div class="in">
+  <button data-tab="today" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/></svg>Today</button>
+  <button data-tab="train"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h2m12 0h2M6 8v8m12-8v8M8 10v4m8-4v4M8 12h8"/></svg>Train</button>
+  <button data-tab="sugar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3s6 7 6 11a6 6 0 01-12 0c0-4 6-11 6-11z"/></svg>Sugar</button>
+  <button data-tab="food"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3v8m-3-8v5a3 3 0 006 0V3M7 11v10M17 3c-2 2-3 5-3 8h3v10"/></svg>Food</button>
+  <button data-tab="study"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2zM4 5v16M8 7h7"/></svg>Study</button>
+  <button data-tab="more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4m8-4v4"/></svg>More</button>
+</div></nav>
+
+<dialog id="sheet"><form id="sheetForm" novalidate></form></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ---------- plan ---------- */
+const PLAN=[
+{focus:"Build the habit",runs:["20 min: 8 × (1 min jog, 1½ min walk)","20 min: 8 × (1 min jog, 1½ min walk)","25 min brisk walk"],str:["Incline push-ups 3×6","Sit-ups 3×10","Squats 3×12","Plank 3×20s"]},
+{focus:"Build the habit",runs:["22 min: 6 × (1½ min jog, 2 min walk)","22 min: 6 × (1½ min jog, 2 min walk)","30 min brisk walk"],str:["Incline push-ups 3×8","Sit-ups 3×12","Squats 3×15","Plank 3×25s"]},
+{focus:"Longer jogs",runs:["24 min: 5 × (2 min jog, 2 min walk)","24 min: 5 × (2 min jog, 2 min walk)","25 min: 4 × (3 min jog, 2 min walk)"],str:["Incline push-ups 4×8","Sit-ups 3×15","Squats 3×15","Plank 3×30s"]},
+{focus:"Check-in week",test:1,runs:["25 min: 4 × (3 min jog, 1½ min walk)","25 min: 4 × (3 min jog, 1½ min walk)","Check-in: 1 mile, best effort (walk if you need to)"],str:["Check-in: max push-ups in 1 min","Check-in: max sit-ups in 1 min","Squats 3×15","Plank 3×30s"]},
+{focus:"Longer jogs",runs:["25 min: 3 × (5 min jog, 2 min walk)","25 min: 3 × (5 min jog, 2 min walk)","20 min: 8 × 20s stride, walk back"],str:["Push-ups 3×5, then incline 2×8","Sit-ups 4×15","Squats 4×15","Plank 3×35s"]},
+{focus:"Longer jogs",runs:["26 min: 2 × (8 min jog, 2 min walk)","26 min: 2 × (8 min jog, 2 min walk)","6 × 30s fast, 90s walk between"],str:["Push-ups 4×6","Sit-ups 4×18","Lunges 3×10 each leg","Plank 3×40s"]},
+{focus:"Run without stopping",runs:["20 min easy jog, no walking","20 min easy jog, no walking","8 × 30s fast, 90s walk between"],str:["Push-ups 4×8","Sit-ups 3×20","Squats 4×20","Plank 3×45s"]},
+{focus:"Check-in week",test:1,runs:["22 min easy jog","22 min easy jog","Check-in: 1.5 miles for time"],str:["Check-in: max push-ups in 1 min","Check-in: max sit-ups in 1 min","Squats 4×20","Plank 3×45s"]},
+{focus:"Add speed",runs:["25 min easy jog","25 min easy jog","6 × 200m fast, 2 min rest"],str:["Push-ups 5×8","Sit-ups 4×20","Jump squats 3×10","Plank 3×50s"]},
+{focus:"Add speed",runs:["30 min easy jog","Tempo: 5 min easy, 12 min steady-hard, 5 min easy","4 × 300m hard, 3 min rest"],str:["Push-ups 5×10","Sit-ups 3×25","Jump squats 3×12","Plank 3×60s"]},
+{focus:"Race pace",runs:["30 min easy jog","6 × 400m at goal 1.5-mile pace, 90s rest","5 × 300m hard, 3 min rest"],str:["Push-ups: 3 rounds of 1-min max","Sit-ups: 3 rounds of 1-min max","Lunges 3×12 each leg","Plank 3×60s"]},
+{focus:"Check-in week",test:1,runs:["30 min easy jog","Tempo: 5 min easy, 15 min steady-hard, 5 min easy","Check-in: 1.5 miles, rest 5 min, then 300m sprint"],str:["Check-in: max push-ups in 1 min","Check-in: max sit-ups in 1 min","Jump squats 3×12","Plank 3×60s"]},
+{focus:"Sharpen",runs:["35 min easy jog","8 × 400m at goal pace, 75s rest","6 × 300m hard, 3 min rest"],str:["Push-ups 5×12","Sit-ups 4×25","Jump squats 4×12","Plank 3×75s"]},
+{focus:"Sharpen",runs:["35 min easy jog","Tempo: 5 min easy, 18 min steady-hard, 5 min easy","4 × 300m at test effort, full rest"],str:["Push-up ladder 1 → 8 → 1","Sit-ups 3×30","Lunges 4×12 each leg","Plank 3×90s"]},
+{focus:"Taper",runs:["30 min easy jog","1 mile at goal pace, then 4 × 200m fast","3 × 300m at test effort, full rest"],str:["Push-ups: 3 rounds of 1-min max","Sit-ups: 3 rounds of 1-min max","Squats 3×20","Plank 3×60s"]},
+{focus:"Mock test",test:1,runs:["20 min easy jog","15 min easy jog + 4 strides","Mock test: 1.5 miles, rest 5 min, then 300m sprint"],str:["Mock test: max push-ups in 1 min","Mock test: max sit-ups in 1 min","Rest or easy walk","Rest or easy walk"]}
+];
+const SESSIONS=[["r0","Run 1"],["r1","Run 2"],["r2","Run 3"],["s0","Strength 1"],["s1","Strength 2"]];
+const EVENTS=[
+ {k:"pushups",name:"Push-ups",unit:"in 1 min",lowerBetter:false},
+ {k:"situps",name:"Sit-ups",unit:"in 1 min",lowerBetter:false},
+ {k:"run15",name:"1.5 mi",unit:"time",lowerBetter:true,time:true},
+ {k:"sprint300",name:"300 m",unit:"seconds",lowerBetter:true}
+];
+const GTAGS=[["fasting","Fasting"],["before","Before meal"],["after","After meal"],["pre","Before workout"],["post","After workout"],["bed","Bedtime"],["other","Other"]];
+const MEALS=["Breakfast","Lunch","Dinner","Snack"];
+
+/* ---------- helpers ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pad=n=>String(n).padStart(2,"0");
+const keyOf=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const todayKey=()=>keyOf(new Date());
+const nowTime=()=>{const d=new Date();return `${pad(d.getHours())}:${pad(d.getMinutes())}`};
+const uid=()=>Math.random().toString(36).slice(2,10);
+const clone=o=>JSON.parse(JSON.stringify(o));
+const num=v=>{const n=parseFloat(v);return isFinite(n)?n:0};
+const parseDate=k=>{const [y,m,d]=k.split("-").map(Number);return new Date(y,m-1,d)};
+const fmtTime=s=>{if(!isFinite(s)||s<=0)return "—";return `${Math.floor(s/60)}:${pad(Math.round(s%60))}`};
+const parseMMSS=v=>{v=String(v||"").trim();if(!v)return null;if(v.includes(":")){const [m,s]=v.split(":");return num(m)*60+num(s)}return num(v)*60};
+const niceDate=k=>parseDate(k).toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"});
+function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove("show"),1800)}
+
+/* ---------- state + storage ---------- */
+const DEFAULTS=()=>({startDate:todayKey(),unit:"mgdl",low:70,high:180,
+  targets:{pushups:30,situps:35,run15:900,sprint300:65},
+  macro:{calories:"",carbs:"",protein:""},done:{},tests:[],favorites:[],
+  water:{goal:1893,unit:"oz"},
+  sched:{mode:"weekly",anchor:todayKey(),pattern:[1,2,3,4,5],days:{},weeks:8,
+    work:[{t:"05:00",what:"Fasting blood sugar"},{t:"10:00",what:"Drink water"},{t:"12:30",what:"Log lunch + blood sugar"},{t:"15:00",what:"Drink water"},{t:"18:30",what:"Workout (check sugar first)"},{t:"20:30",what:"Study cards (10 min)"},{t:"21:30",what:"Bedtime blood sugar"}],
+    off:[{t:"08:30",what:"Fasting blood sugar"},{t:"11:00",what:"Workout (check sugar first)"},{t:"13:00",what:"Log lunch + blood sugar"},{t:"16:00",what:"Drink water"},{t:"19:00",what:"Study cards (10 min)"},{t:"22:00",what:"Bedtime blood sugar"}]},
+  study:{cards:{},perDay:10,log:{}}});
+let S={profile:DEFAULTS(),days:{}};
+const LS="academy-ready-v1";
+try{const c=JSON.parse(localStorage.getItem(LS)||"null");if(c&&c.profile){S=c;const D=DEFAULTS();S.profile={...D,...c.profile,water:{...D.water,...(c.profile.water||{})},sched:{...D.sched,...(c.profile.sched||{})},study:{...D.study,...(c.profile.study||{})}};S.days=S.days||{}}}catch(e){}
+function cache(){try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){toast("Couldn't save — phone storage may be full")}}
+function saveProfile(){cache()}
+function day(k){const d=S.days[k]||(S.days[k]={date:k,glucose:[],food:[]});d.water=d.water||[];return d}
+function saveDay(k){cache()}
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+
+/* ---------- water ---------- */
+const wUnit=()=>S.profile.water.unit;
+const wDisp=ml=>wUnit()==="oz"?Math.round(ml/29.5735):Math.round(ml);
+const wServ=()=>wUnit()==="oz"?[8,16,24]:[250,500,750];
+const toMl=v=>wUnit()==="oz"?v*29.5735:v;
+function waterPanel(k){const arr=S.days[k]?.water||[],tot=arr.reduce((a,b)=>a+b,0),goal=S.profile.water.goal,serv=toMl(wServ()[0]),n=Math.min(16,Math.ceil(goal/serv)),filled=Math.floor(tot/serv+0.01);
+  return `<div class="panel"><div class="row between"><h3>Water</h3><span class="small muted">${wDisp(tot)} of ${wDisp(goal)} ${wUnit()}</span></div>
+  <div class="glasses" aria-hidden="true">${Array.from({length:n},(_,i)=>`<i class="${i<filled?"on":""}"></i>`).join("")}</div>
+  <div class="row" style="flex-wrap:wrap">${wServ().map(v=>`<button class="btn ghost sm" data-water="${k}|${v}">+${v} ${wUnit()}</button>`).join("")}${arr.length?`<button class="btn ghost sm" data-water-undo="${k}">Undo</button>`:""}</div></div>`}
+
+/* ---------- schedule ---------- */
+const WD=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const fmt12=t=>{let [h,m]=t.split(":").map(Number);const ap=h<12?"AM":"PM";h=h%12||12;return `${h}:${pad(m)} ${ap}`};
+const PANAMA="WWOOWWWOOWWOOO";
+function baseType(k){const sc=S.profile.sched;if(sc.mode==="panama"){const n=Math.round((parseDate(k)-parseDate(sc.anchor||todayKey()))/864e5),i=((n%14)+14)%14;return PANAMA[i]==="W"?"work":"off"}
+  return sc.pattern.includes(parseDate(k).getDay())?"work":"off"}
+function dayType(k){const o=S.profile.sched.days[k];return o||baseType(k)}
+function todayReminders(){const type=dayType(todayKey()),now=nowTime(),up=[...S.profile.sched[type]].sort((a,b)=>a.t<b.t?-1:1).filter(r=>r.t>=now);
+  return `<div class="panel"><div class="row between"><h3>${type==="work"?"Work day":"Day off"}</h3><button class="btn ghost sm" data-go="sched">Schedule</button></div>
+  ${up.length?up.slice(0,3).map(r=>`<div class="item"><span>${esc(r.what)}</span><span class="small muted">${fmt12(r.t)}</span></div>`).join(""):`<p class="small muted" style="margin:0">No more reminders today.</p>`}</div>`}
+let calMonth=null;
+function renderSched(){
+  const P=S.profile.sched;if(!calMonth){const d=new Date();calMonth=new Date(d.getFullYear(),d.getMonth(),1)}
+  const y=calMonth.getFullYear(),m=calMonth.getMonth(),first=new Date(y,m,1).getDay(),dim=new Date(y,m+1,0).getDate(),tk=todayKey();
+  let cells=WD.map(n=>`<span class="h">${n[0]}</span>`).join("");for(let i=0;i<first;i++)cells+="<span></span>";
+  for(let d=1;d<=dim;d++){const k=keyOf(new Date(y,m,d)),t=dayType(k);cells+=`<button data-cal="${k}" class="${t}${k===tk?" today":""}${k<tk?" past":""}" aria-pressed="${t==="work"}" aria-label="${esc(niceDate(k))}, ${t==="work"?"work day":"day off"}">${d}<small>${t==="work"?"Work":"Off"}</small></button>`}
+  const remList=type=>P[type].map((r,i)=>`<div class="rem"><input type="time" value="${r.t}" data-rem="${type}|${i}|t" aria-label="Time"><input type="text" list="remWhat" value="${esc(r.what)}" data-rem="${type}|${i}|what" aria-label="Reminder"><button class="x" data-rem-del="${type}|${i}" aria-label="Delete reminder">×</button></div>`).join("")+`<button class="btn ghost sm" data-rem-add="${type}" style="margin-top:6px">Add reminder</button>`;
+  $("#v-sched").innerHTML=`
+  <h2>Schedule</h2>
+  <div class="panel">
+    <div class="weeknav"><button class="btn ghost sm" data-calm="-1" aria-label="Previous month">‹</button><div class="kind" style="font-size:22px">${calMonth.toLocaleDateString(undefined,{month:"long",year:"numeric"})}</div><button class="btn ghost sm" data-calm="1" aria-label="Next month">›</button></div>
+    <div class="cal">${cells}</div>
+    <p class="small muted" style="margin:10px 0 0">Tap a day to switch it between work and off.</p>
+  </div>
+  <div class="panel">
+    <h3>Work pattern</h3>
+    <div class="chips" style="margin-bottom:12px">
+      <label><input type="radio" name="smode" data-mode="panama" ${P.mode==="panama"?"checked":""}><span>Panama (2-2-3)</span></label>
+      <label><input type="radio" name="smode" data-mode="weekly" ${P.mode!=="panama"?"checked":""}><span>Same days every week</span></label>
+    </div>
+    ${P.mode==="panama"?`<p class="small">A 14-day rotation: 2 on, 2 off, 3 on, 2 off, 2 on, 3 off. Pick the first day you work after your 3 days off, then check the calendar above.</p>
+    <label class="f">Cycle starts</label><input type="date" data-anchor value="${P.anchor||todayKey()}">`
+    :`<p class="small muted">Your usual work days. Days you tap on the calendar override them.</p>
+    <div class="chips">${WD.map((n,i)=>`<label><input type="checkbox" data-pat="${i}" ${P.pattern.includes(i)?"checked":""}><span>${n}</span></label>`).join("")}</div>`}
+    <p class="small muted" style="margin:10px 0 0">Swapped a shift or picked up overtime? Tap that day on the calendar.</p>
+  </div>
+  <div class="panel"><h3>Work day reminders</h3>${remList("work")}</div>
+  <div class="panel"><h3>Day off reminders</h3>${remList("off")}</div>
+  <div class="panel">
+    <h3>Turn on notifications</h3>
+    <p class="small">Your phone's calendar does the alerts, so they go off even when this app is closed. This builds a calendar file with every reminder above, matched to your work and off days, for the next
+    <select data-weeks style="width:auto;padding:4px 8px;display:inline-block">${[4,8,12].map(w=>`<option value="${w}" ${P.weeks===w?"selected":""}>${w} weeks</option>`).join("")}</select></p>
+    <button class="btn brass" data-ics style="width:100%">Add reminders to my calendar</button>
+    <p class="note">On Android, the Google Calendar app can't open this file. Send it to a computer, then go to calendar.google.com → Settings → Import & export, and import it into a calendar called "Academy Ready". When your schedule changes, delete that calendar and import a fresh file.</p>
+  </div>
+  <datalist id="remWhat"><option>Fasting blood sugar</option><option>Log breakfast + blood sugar</option><option>Log lunch + blood sugar</option><option>Log dinner + blood sugar</option><option>Drink water</option><option>Workout (check sugar first)</option><option>Bedtime blood sugar</option><option>Study cards (10 min)</option></datalist>`;
+}
+const icsDate=d=>`${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}T${pad(d.getHours())}${pad(d.getMinutes())}00`;
+const icsEsc=s=>String(s).replace(/\\/g,"\\\\").replace(/[,;]/g,m=>"\\"+m).replace(/\n/g,"\\n");
+function buildIcs(){const weeks=S.profile.sched.weeks||8,now=new Date(),stamp=new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d+/,"");
+  const L=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Academy Ready//EN","CALSCALE:GREGORIAN","METHOD:PUBLISH","X-WR-CALNAME:Academy Ready"];let n=0;
+  for(let i=0;i<weeks*7;i++){const d=new Date(now.getFullYear(),now.getMonth(),now.getDate()+i),k=keyOf(d);
+    S.profile.sched[dayType(k)].forEach((r,j)=>{if(!r.t)return;const [h,m]=r.t.split(":").map(Number),st=new Date(d);st.setHours(h,m,0,0);if(st<now)return;const en=new Date(st.getTime()+5*60000);
+      L.push("BEGIN:VEVENT",`UID:ar-${k}-${r.t.replace(":","")}-${j}@academy-ready`,`DTSTAMP:${stamp}`,`DTSTART:${icsDate(st)}`,`DTEND:${icsDate(en)}`,`SUMMARY:${icsEsc(r.what||"Academy Ready")}`,"TRANSP:TRANSPARENT","BEGIN:VALARM","ACTION:DISPLAY",`DESCRIPTION:${icsEsc(r.what||"Reminder")}`,"TRIGGER:PT0M","END:VALARM","END:VEVENT");n++})}
+  L.push("END:VCALENDAR");return {text:L.join("\r\n")+"\r\n",n}}
+function downloadBlob(blob,name){const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000)}
+function exportIcs(){const {text,n}=buildIcs();if(!n){toast("Add a reminder first");return}
+  downloadBlob(new Blob([text],{type:"text/calendar"}),"academy-ready-reminders.ics");toast(`${n} reminders ready to add`)}
+
+/* ---------- common foods (per serving, approx.) name,cal,carbs,fiber,sugar,protein,fat ---------- */
+const FOODS=[
+["Egg, large",72,0.4,0,0.2,6,5],["White rice, 1 cup cooked",205,45,0.6,0.1,4,0.4],["Brown rice, 1 cup cooked",218,46,3.5,0.7,4.5,1.6],
+["White bread, 1 slice",75,14,0.7,1.5,2.5,1],["Whole wheat bread, 1 slice",80,14,2,1.5,4,1],["Bagel, plain medium",277,55,2.3,5,11,1.4],
+["Oatmeal, 1 cup cooked",166,28,4,0.6,6,3.6],["Pasta, 1 cup cooked",221,43,2.5,0.8,8,1.3],["Flour tortilla, 8 in",145,24,1.5,1,4,3.5],
+["Corn tortilla, 6 in",52,11,1.5,0.2,1.4,0.7],["Potato, baked medium",161,37,3.8,2,4.3,0.2],["Sweet potato, baked medium",103,24,3.8,7.4,2.3,0.2],
+["Black beans, ½ cup",114,20,7.5,0.3,7.6,0.5],["Banana, medium",105,27,3.1,14,1.3,0.4],["Apple, medium",95,25,4.4,19,0.5,0.3],
+["Orange, medium",62,15,3.1,12,1.2,0.2],["Strawberries, 1 cup",49,12,3,7,1,0.5],["Blueberries, 1 cup",84,21,3.6,15,1.1,0.5],
+["Avocado, ½",120,6,5,0.2,1.5,11],["Broccoli, 1 cup cooked",55,11,5,2,3.7,0.6],["Salad greens, 2 cups",15,3,2,0.5,1.5,0],
+["Chicken breast, 4 oz cooked",187,0,0,0,35,4],["Ground beef 85%, 4 oz cooked",290,0,0,0,28,19],["Salmon, 4 oz cooked",233,0,0,0,25,14],
+["Tuna, canned 3 oz",100,0,0,0,22,1],["Milk 2%, 1 cup",122,12,0,12,8,4.8],["Greek yogurt plain nonfat, 6 oz",100,6,0,4,17,0.7],
+["Cottage cheese 2%, ½ cup",90,5,0,4,12,2.5],["Cheddar cheese, 1 oz",114,0.4,0,0.1,7,9.4],["Peanut butter, 2 tbsp",190,7,2,3,7,16],
+["Almonds, 1 oz",164,6,3.5,1.2,6,14],["Whey protein, 1 scoop",120,3,0,2,24,1.5],["Orange juice, 1 cup",112,26,0.5,21,1.7,0.5],
+["Soda, 12 oz can",140,39,0,39,0,0],["Coffee, black",2,0,0,0,0.3,0],["Cheese pizza, 1 large slice",285,36,2.5,3.8,12,10],
+["Cheeseburger, fast food single",300,33,1.5,7,15,12],["French fries, medium",365,48,4.4,0.3,4,17]];
+
+
+/* ---------- glucose units ---------- */
+const isMmol=()=>S.profile.unit==="mmol";
+const gDisp=v=>isMmol()?(v/18).toFixed(1):Math.round(v);
+const gUnit=()=>isMmol()?"mmol/L":"mg/dL";
+const gIn=v=>isMmol()?num(v)*18:num(v);
+const gClass=v=>v<S.profile.low?"low":v>S.profile.high?"high":"in";
+
+/* ---------- training math ---------- */
+function curWeek(){const d=Math.floor((parseDate(todayKey())-parseDate(S.profile.startDate))/864e5);return Math.min(16,Math.max(1,Math.floor(d/7)+1))}
+const doneKey=(w,s)=>`${w}-${s}`;
+const weekDone=w=>SESSIONS.filter(([s])=>S.profile.done[doneKey(w,s)]).length;
+function sessText(w,s){const p=PLAN[w-1];return s[0]==="r"?p.runs[+s[1]]:p.str.join(" · ")}
+function nextSession(){const w=curWeek();const s=SESSIONS.find(([k])=>!S.profile.done[doneKey(w,k)]);return s?{w,k:s[0],name:s[1]}:null}
+
+/* ---------- readiness ---------- */
+function bestOf(k){const vals=S.profile.tests.map(t=>t[k]).filter(v=>v>0);if(!vals.length)return null;const e=EVENTS.find(e=>e.k===k);return e.lowerBetter?Math.min(...vals):Math.max(...vals)}
+function latestOf(k){const t=[...S.profile.tests].sort((a,b)=>a.date<b.date?1:-1).find(t=>t[k]>0);return t?t[k]:null}
+function evPct(k){const v=latestOf(k),tg=S.profile.targets[k],e=EVENTS.find(e=>e.k===k);if(v==null||!tg)return null;return Math.min(1,e.lowerBetter?tg/v:v/tg)}
+function readiness(){const ps=EVENTS.map(e=>evPct(e.k)).filter(p=>p!=null);return ps.length?ps.reduce((a,b)=>a+b,0)/EVENTS.length:0}
+const evVal=(e,v)=>v==null?"—":e.time?fmtTime(v):e.k==="sprint300"?v+"s":v;
+
+/* ---------- nutrition ---------- */
+function totals(k){const t={calories:0,carbs:0,fiber:0,sugar:0,protein:0,fat:0};(S.days[k]?.food||[]).forEach(f=>{for(const x in t)t[x]+=num(f[x])});return t}
+
+/* ---------- study ---------- */
+const DECK=[["post1", "Getting in", "Who certifies peace officers in Georgia?", "The Georgia Peace Officer Standards and Training Council (POST). You apply to POST before starting basic training.", ""], ["post2", "Getting in", "Minimum requirements to start basic training in Georgia?", "At least 18, U.S. citizen, high school diploma or GED, and no conviction for a crime punishable by imprisonment. Plus a background check, fingerprints, physical exam, entrance exam, and academy interview. Many agencies set a higher bar (often age 21).", "GPSTC"], ["post3", "Getting in", "What is the official POST entrance exam?", "ACCUPLACER (Next-Generation), official since March 1, 2016. Untimed and computer-based, usually about 2 hours, taken at Georgia technical colleges.", "O.C.G.A. § 35-8-8"], ["post4", "Getting in", "Minimum ACCUPLACER scores for POST?", "Reading 224, Writing 236, Arithmetic 229.", ""], ["post5", "Getting in", "What do you bring to the entrance exam?", "A government-issued photo ID and the POST Entrance Examination Access Form, which you return to POST with your results and application. No phones in the testing area.", ""], ["post6", "Getting in", "What is GPSTC?", "The Georgia Public Safety Training Center in Forsyth, the state's main public safety academy, with regional academies around the state.", ""], ["con1", "Constitution", "What does the 4th Amendment protect?", "Against unreasonable searches and seizures. Warrants need probable cause, supported by oath, and must particularly describe the place and the persons or things to be seized.", ""], ["con2", "Constitution", "5th Amendment: three protections that matter in police work?", "The right against self-incrimination, protection from double jeopardy, and due process.", ""], ["con3", "Constitution", "6th Amendment: key rights?", "A speedy and public trial by jury, being told the charges, confronting witnesses, and the assistance of counsel.", ""], ["con4", "Constitution", "Why does the 14th Amendment matter to Georgia officers?", "Its due process clause applies most of the Bill of Rights to the states, so state and local officers are bound by the 4th, 5th and 6th Amendments.", ""], ["con5", "Constitution", "Reasonable suspicion vs. probable cause?", "Reasonable suspicion: specific, articulable facts that crime is afoot; enough for a brief stop. Probable cause: facts that would lead a reasonable person to believe a crime was committed and this person did it; needed to arrest or get a warrant.", ""], ["con6", "Constitution", "Terry v. Ohio (1968)", "Officers may briefly stop someone on reasonable suspicion, and frisk outer clothing for weapons if they reasonably believe the person is armed and dangerous.", ""], ["con7", "Constitution", "Miranda v. Arizona (1966): when are warnings required?", "Before custodial interrogation: the person is in custody AND being questioned (or its equivalent). Both must be present.", ""], ["con8", "Constitution", "Mapp v. Ohio (1961)", "Applied the exclusionary rule to the states: evidence from an unconstitutional search can't be used at trial.", ""], ["con9", "Constitution", "Fruit of the poisonous tree", "Evidence derived from an illegal search, arrest or confession is also excluded (Wong Sun v. U.S., 1963), unless an exception applies such as independent source, inevitable discovery, or attenuation.", ""], ["con10", "Constitution", "Graham v. Connor (1989): the use-of-force standard", "Objective reasonableness, judged from the view of a reasonable officer on the scene, not 20/20 hindsight. Factors: severity of the crime, immediate threat to officers or others, and active resistance or flight.", ""], ["con11", "Constitution", "Tennessee v. Garner (1985)", "Deadly force can't be used on a fleeing suspect unless there's probable cause the suspect poses a significant threat of death or serious physical injury to the officer or others. Warn first where feasible.", ""], ["con12", "Constitution", "Chimel v. California (1969)", "Search incident to arrest covers the arrestee's person and the area within their immediate control, not the whole house.", ""], ["con13", "Constitution", "Arizona v. Gant (2009): searching a car after an arrest", "Allowed only if the arrestee is unsecured and within reaching distance of the passenger compartment, or it's reasonable to believe evidence of the crime of arrest is in the vehicle.", ""], ["con14", "Constitution", "Carroll v. United States (1925)", "The automobile exception: with probable cause that a vehicle holds evidence or contraband, officers may search it without a warrant.", ""], ["con15", "Constitution", "Payton v. New York (1980)", "Officers need an arrest warrant to enter a suspect's home for a routine felony arrest, absent consent or exigent circumstances.", ""], ["con16", "Constitution", "Plain view doctrine", "An officer may seize an item without a warrant if lawfully in the viewing position and the item's incriminating nature is immediately apparent (Horton v. California, 1990).", ""], ["con17", "Constitution", "Rodriguez v. United States (2015)", "A traffic stop can't be prolonged beyond its mission (for example, to wait for a dog sniff) without separate reasonable suspicion.", ""], ["con18", "Constitution", "Brady and Giglio", "Brady v. Maryland: prosecutors must disclose evidence favorable to the defense. Giglio v. U.S.: that includes anything hurting a witness's credibility, including an officer's record of dishonesty.", ""], ["con19", "Constitution", "Garrity v. New Jersey (1967)", "Statements an officer is compelled to give under threat of losing their job can't be used against them in a criminal case.", ""], ["con20", "Constitution", "Name four exigent circumstances", "Hot pursuit of a fleeing suspect, preventing imminent destruction of evidence, emergency aid to someone hurt or in danger, and preventing a suspect's escape.", ""], ["cr1", "Georgia crimes", "Felony vs. misdemeanor in Georgia", "Felony: punishable by death, life, or more than 12 months in prison. Misdemeanor: up to 12 months in jail and/or up to a $1,000 fine.", "O.C.G.A. §§ 16-1-3, 17-10-3"], ["cr2", "Georgia crimes", "What is a forcible felony?", "Any felony involving the use or threat of physical force or violence against a person, such as murder, armed robbery, rape, aggravated assault, or kidnapping.", "O.C.G.A. § 16-1-3"], ["cr3", "Georgia crimes", "Simple assault", "Attempting to commit a violent injury to another, or an act that puts another in reasonable apprehension of immediately receiving a violent injury. No contact needed.", "O.C.G.A. § 16-5-20"], ["cr4", "Georgia crimes", "Aggravated assault", "Assault with intent to murder, rape or rob; with a deadly weapon or an object likely to cause serious bodily injury when used offensively; or by strangulation, among others. A felony.", "O.C.G.A. § 16-5-21"], ["cr5", "Georgia crimes", "Simple battery", "Intentionally making physical contact of an insulting or provoking nature, or intentionally causing physical harm.", "O.C.G.A. § 16-5-23"], ["cr6", "Georgia crimes", "Battery", "Intentionally causing substantial physical harm or visible bodily harm, like a black eye, swollen lip, or substantial bruising.", "O.C.G.A. § 16-5-23.1"], ["cr7", "Georgia crimes", "Aggravated battery", "Maliciously causing bodily harm by depriving someone of a member of the body, making a member useless, or seriously disfiguring them. A felony.", "O.C.G.A. § 16-5-24"], ["cr8", "Georgia crimes", "Burglary: 1st vs. 2nd degree", "Entering or remaining without authority, intending to commit a felony or theft. 1st degree: a dwelling. 2nd degree: other buildings, railroad cars, aircraft, watercraft and similar.", "O.C.G.A. § 16-7-1"], ["cr9", "Georgia crimes", "Theft by taking: when is it a felony?", "When the property is worth more than $1,500, or regardless of value for items like firearms and explosives. $1,500 or less is generally a misdemeanor.", "O.C.G.A. §§ 16-8-2, 16-8-12"], ["cr10", "Georgia crimes", "Shoplifting: when is it a felony?", "When the property is worth more than $500, or on a fourth or later conviction.", "O.C.G.A. § 16-8-14"], ["cr11", "Georgia crimes", "Robbery", "Taking property from another's person or immediate presence, with intent to commit theft, by force, by intimidation or threat, or by sudden snatching.", "O.C.G.A. § 16-8-40"], ["cr12", "Georgia crimes", "Armed robbery", "Robbery using an offensive weapon, or any replica, article or device that appears to be one.", "O.C.G.A. § 16-8-41"], ["cr13", "Georgia crimes", "Obstruction of an officer", "Knowingly and willfully obstructing or hindering an officer in the lawful discharge of duties. Misdemeanor; a felony if done by offering or doing violence to the officer.", "O.C.G.A. § 16-10-24"], ["cr14", "Georgia crimes", "Terroristic threats", "Threatening a crime of violence, release of hazardous substances, or burning or damaging property, with intent to terrorize another or in reckless disregard of causing terror.", "O.C.G.A. § 16-11-37"], ["cr15", "Georgia crimes", "Criminal trespass (key forms)", "Intentionally damaging another's property worth $500 or less, or knowingly entering or staying on premises after notice not to enter or to leave.", "O.C.G.A. § 16-7-21"], ["ar1", "Arrest & procedure", "When can a Georgia officer arrest without a warrant?", "Examples: the offense happens in the officer's presence or within their immediate knowledge; the offender is trying to escape; a warrant can't be obtained in time and justice would fail; exigent circumstances; or probable cause of family violence.", "O.C.G.A. § 17-4-20"], ["ar2", "Arrest & procedure", "Warrantless arrest: how fast before a judge?", "Within 48 hours, or the person must be released.", "O.C.G.A. § 17-4-62"], ["ar3", "Arrest & procedure", "Arrest on a warrant: how fast before a judge?", "Within 72 hours.", "O.C.G.A. § 17-4-26"], ["ar4", "Arrest & procedure", "Does Georgia still have a citizen's arrest law?", "No. HB 479, signed in May 2021, repealed it. Limited detention remains for store owners and employees (suspected theft), restaurants (leaving without paying), licensed security guards and private detectives, and off-duty officers.", ""], ["ar5", "Arrest & procedure", "What does a valid search warrant need?", "Probable cause shown by sworn affidavit or testimony, issued by a neutral judicial officer, particularly describing the place to be searched and things to be seized.", ""], ["ar6", "Arrest & procedure", "How long to execute a Georgia search warrant?", "Within 10 days of issuance, or it's void.", "O.C.G.A. § 17-5-25"], ["ar7", "Arrest & procedure", "What makes a consent search valid?", "Consent must be voluntary, given by someone with authority over the place, and the search must stay within its scope. Consent can be withdrawn.", ""], ["ar8", "Arrest & procedure", "Chain of custody", "The documented record of everyone who handled a piece of evidence from collection to court. Gaps can get evidence excluded.", ""], ["fv1", "Family violence", "Who is covered by Georgia's Family Violence Act?", "Past or present spouses, parents of the same child, parents and children, stepparents and stepchildren, foster parents and foster children, and others living or formerly living in the same household.", "O.C.G.A. § 19-13-1"], ["fv2", "Family violence", "Which acts count as family violence?", "Between those people: any felony, or battery, simple battery, simple assault, assault, stalking, criminal damage to property, unlawful restraint, or criminal trespass. Reasonable discipline of a child by a parent is excluded.", "O.C.G.A. § 19-13-1"], ["fv3", "Family violence", "Both people say they were attacked. Arrest both?", "No. Evaluate each complaint separately to determine the primary aggressor, rather than automatically arresting both.", "O.C.G.A. § 17-4-20.1"], ["fv4", "Family violence", "Paperwork on every family violence call?", "A Family Violence Report, whether or not an arrest is made.", "O.C.G.A. § 17-4-20.1"], ["tr1", "Traffic & DUI", "Georgia DUI per se limits", "0.08 for drivers 21 and over, 0.02 under 21, 0.04 in a commercial vehicle. A driver can also be charged as 'less safe' at any level.", "O.C.G.A. § 40-6-391"], ["tr2", "Traffic & DUI", "What is implied consent?", "Driving in Georgia means consenting to chemical testing when arrested for DUI. Officers read the notice matching the driver (21+, under 21, or commercial). Refusal can lead to license suspension.", "O.C.G.A. § 40-5-55"], ["tr3", "Traffic & DUI", "Elliott v. State (2019)", "The Georgia Supreme Court held the state constitution's right against self-incrimination covers breath tests, so refusing a breath test can't be used as evidence at a criminal trial.", ""], ["tr4", "Traffic & DUI", "Georgia's Hands-Free law", "Drivers can't hold or support a phone with any part of their body while driving. Hands-free calls and navigation are allowed. In effect since July 1, 2018.", "O.C.G.A. § 40-6-241"], ["tr5", "Traffic & DUI", "Move Over law", "When passing a stopped emergency, tow, utility or maintenance vehicle with flashing lights, change lanes away from it if safe; otherwise slow below the limit and be ready to stop.", "O.C.G.A. § 40-6-16"], ["tr6", "Traffic & DUI", "Who is a 'Super Speeder'?", "A driver convicted of 75+ mph on a two-lane road or 85+ mph anywhere in Georgia. They owe an extra $200 state fee on top of the local fine.", ""], ["uf1", "Use of force", "When does Georgia law justify force in defense?", "When a person reasonably believes it's necessary to defend themselves or another against imminent unlawful force. Deadly force only if they reasonably believe it's necessary to prevent death, great bodily injury, or a forcible felony.", "O.C.G.A. § 16-3-21"], ["uf2", "Use of force", "Duty to retreat in Georgia?", "None. A person justified in using force has no duty to retreat ('stand your ground').", "O.C.G.A. § 16-3-23.1"], ["uf3", "Use of force", "When may a Georgia officer use deadly force to apprehend a suspected felon?", "Only when the officer reasonably believes the suspect has a deadly weapon or an object used in a way likely to cause serious injury; reasonably believes the suspect poses an immediate threat of physical violence to the officer or others; or has probable cause the suspect committed a crime involving infliction or threatened infliction of serious physical harm.", "O.C.G.A. § 17-4-20"], ["uf4", "Use of force", "Duty to intervene", "An officer who sees another officer using clearly excessive force must intervene when there's a realistic chance to, and report it. Failing to can bring liability.", ""], ["ju1", "Juveniles", "At what age is someone charged as an adult in Georgia?", "17. Juvenile court handles delinquency for children under 17. As of 2026, raising the age to 18 is only being studied.", ""], ["rw1", "Reports & ethics", "What must every incident report answer?", "Who, what, when, where, why and how, in clear, factual, chronological order.", ""], ["rw2", "Reports & ethics", "Report style basics", "First person, past tense, active voice. Record facts and what you observed, not opinions. Quote statements exactly.", ""], ["rw3", "Reports & ethics", "Convert 1945 hours to standard time", "7:45 PM. Subtract 12 from any hour over 12.", ""], ["rw4", "Reports & ethics", "Why can one lie end an officer's career?", "A proven lie can put an officer on the prosecutor's Brady/Giglio list, which can keep them from testifying, and an officer who can't testify can't make cases.", ""], ["ex1", "Exam practice", "What is 15% of 240?", "36 (240 × 0.15).", ""], ["ex2", "Exam practice", "Write 3/8 as a decimal and a percent", "0.375 and 37.5%.", ""], ["ex3", "Exam practice", "A patrol car goes 168 miles on 7 gallons. Miles per gallon?", "24 mpg (168 ÷ 7).", ""], ["ex4", "Exam practice", "2/3 + 1/4 = ?", "11/12 (8/12 + 3/12).", ""], ["ex5", "Exam practice", "A $60 item is 25% off. Sale price?", "$45.", ""], ["ex6", "Exam practice", "Fix it: \"The officers returned to there cars.\"", "\"...to their cars.\" Their = belonging to them; there = a place; they're = they are.", ""], ["ex7", "Exam practice", "Fix it: \"Each of the witnesses have a statement.\"", "\"Each of the witnesses has a statement.\" Each is singular.", ""], ["ex8", "Exam practice", "Fix it: \"The suspect ran, the officer followed.\"", "It's a comma splice. Use a period, a semicolon, or add 'and': \"The suspect ran, and the officer followed.\"", ""], ["ex9", "Exam practice", "Affect vs. effect", "Affect is usually a verb (the drug affected him). Effect is usually a noun (the effect was immediate).", ""], ["ex10", "Exam practice", "3 officers process 12 reports in 4 hours. How many can 5 officers process in 4 hours?", "20. Each officer handles 4 reports in 4 hours.", ""]];
+const CATS=[...new Set(DECK.map(c=>c[1]))];
+const BOXDAYS=[0,1,2,4,8,16];
+const card=id=>DECK.find(c=>c[0]===id);
+const addDays=(k,n)=>{const d=parseDate(k);d.setDate(d.getDate()+n);return keyOf(d)};
+const ST=()=>S.profile.study;
+function todaysCards(){const st=ST(),tk=todayKey(),done=st.log[tk]||{new:0,rev:0};
+  const due=DECK.filter(c=>st.cards[c[0]]&&st.cards[c[0]].due<=tk).map(c=>c[0]);
+  const fresh=DECK.filter(c=>!st.cards[c[0]]).slice(0,Math.max(0,st.perDay-done.new)).map(c=>c[0]);
+  return {due,fresh}}
+function streak(){const log=ST().log;let n=0,d=new Date();if(!log[keyOf(d)]?.rev)d.setDate(d.getDate()-1);while(log[keyOf(d)]?.rev){n++;d.setDate(d.getDate()-1)}return n}
+const mastered=ids=>ids.filter(id=>(ST().cards[id]?.box||0)>=4).length;
+let sess=null;
+function startSession(ids,label){if(!ids.length){toast("Nothing to review right now");return}
+  const shuffled=ids.slice().sort(()=>Math.random()-.5);sess={q:shuffled,i:0,shown:false,got:0,miss:0,requeued:{},label};show("study");renderStudy()}
+function answer(knew){const id=sess.q[sess.i],st=ST(),tk=todayKey(),c=st.cards[id],isNew=!c,log=st.log[tk]||(st.log[tk]={new:0,rev:0});
+  if(!sess.requeued[id]){if(isNew)log.new++;log.rev++}
+  const box=knew?Math.min(5,(c?.box||0)+1):1;
+  st.cards[id]={box,due:knew?addDays(tk,BOXDAYS[box]):tk};
+  if(knew)sess.got++;else{sess.miss++;if(!sess.requeued[id]){sess.requeued[id]=1;sess.q.push(id)}}
+  sess.i++;sess.shown=false;saveProfile();renderStudy();renderToday()}
+function renderStudy(){
+  const el=$("#v-study"),st=ST();
+  if(sess&&sess.i<sess.q.length){const c=card(sess.q[sess.i]);
+    el.innerHTML=`<div class="row between"><h2 style="margin-bottom:6px">${esc(sess.label)}</h2><button class="btn ghost sm" data-study-end>End</button></div>
+    <div class="bar" style="margin-bottom:14px"><i style="width:${sess.i/sess.q.length*100}%"></i></div>
+    <div class="panel" style="min-height:260px">
+      <div class="row between"><span class="tag">${esc(c[1])}</span><span class="small muted">${sess.i+1} of ${sess.q.length}</span></div>
+      <div class="q">${esc(c[2])}</div>
+      ${sess.shown?`<div class="a">${esc(c[3])}${c[4]?`<div class="cite">${esc(c[4])}</div>`:""}</div>`:""}
+    </div>
+    ${sess.shown?`<div class="grid2"><button class="btn ghost" data-study-ans="0">Missed it</button><button class="btn" data-study-ans="1">Knew it</button></div>`
+      :`<button class="btn" style="width:100%" data-study-show>Show answer</button>`}`;
+    return}
+  if(sess){const g=sess.got,m=sess.miss;sess=null;
+    el.innerHTML=`<h2>Done</h2><div class="panel"><div class="big">${g}<span class="small muted" style="font-family:var(--body)"> knew</span></div>
+    <p class="muted" style="margin-top:8px">${m?`${m} missed. Missed cards keep coming back until they stick.`:"Clean run."} Study streak: ${streak()} day${streak()===1?"":"s"}.</p>
+    <button class="btn" data-study-home>Back to study</button></div>`;return}
+  const {due,fresh}=todaysCards(),n=due.length+fresh.length,all=DECK.map(c=>c[0]);
+  el.innerHTML=`<h2>Study</h2>
+  <div class="panel">
+    <div class="row between"><h3>Today's cards</h3><span class="small muted">Streak: ${streak()} day${streak()===1?"":"s"}</span></div>
+    ${n?`<p class="small">${due.length} to review, ${fresh.length} new. About ${Math.max(2,Math.round(n*0.5))} minutes.</p><button class="btn brass" style="width:100%" data-study-start>Start today's cards</button>`
+      :`<p class="small muted" style="margin:0">All caught up. New cards unlock tomorrow.</p>`}
+    <div style="margin-top:14px"><div class="row between small"><span>Mastered</span><span class="muted">${mastered(all)} of ${all.length}</span></div><div class="bar"><i style="width:${mastered(all)/all.length*100}%"></i></div></div>
+  </div>
+  <div class="panel">
+    <h3>Study guide</h3>
+    <p class="small muted">Open a topic to read it, or drill it as cards.</p>
+    ${CATS.map(cat=>{const ids=DECK.filter(c=>c[1]===cat);return `<details><summary><span><b>${esc(cat)}</b> <span class="small muted">${mastered(ids.map(c=>c[0]))}/${ids.length} mastered</span></span><span class="small muted">▾</span></summary>
+      <button class="btn ghost sm" style="margin-top:8px" data-study-cat="${esc(cat)}">Drill ${ids.length} cards</button>
+      ${ids.map(c=>`<div class="gq">${esc(c[2])}</div><div class="ga">${esc(c[3])}${c[4]?` <span class="cite" style="font-size:12px">${esc(c[4])}</span>`:""}</div>`).join("")}</details>`}).join("")}
+  </div>
+  <div class="panel flat small">
+    <label class="f" style="margin-top:0">New cards per day</label>
+    <select data-perday style="width:auto">${[5,10,15,20].map(v=>`<option ${st.perDay===v?"selected":""}>${v}</option>`).join("")}</select>
+    <p class="note">Georgia-focused study summaries, checked September 2026. They're for learning, not legal advice. Laws change, so your academy materials and the current O.C.G.A. win if anything differs.</p>
+  </div>`;
+}
+
+/* ---------- views ---------- */
+function shieldSVG(p){
+  const h=150,fillY=h-(h*p);
+  return `<svg class="shield" viewBox="0 0 120 150" role="img" aria-label="Academy readiness ${Math.round(p*100)} percent">
+  <defs><clipPath id="sc"><path d="M60 4 L112 22 V70 C112 108 88 134 60 146 C32 134 8 108 8 70 V22 Z"/></clipPath></defs>
+  <path d="M60 4 L112 22 V70 C112 108 88 134 60 146 C32 134 8 108 8 70 V22 Z" fill="var(--surface)" stroke="var(--line)" stroke-width="3"/>
+  <g clip-path="url(#sc)"><rect class="fill" x="0" y="0" width="120" height="150" fill="var(--brass)" style="transform:translateY(${fillY}px)"/></g>
+  <path d="M60 4 L112 22 V70 C112 108 88 134 60 146 C32 134 8 108 8 70 V22 Z" fill="none" stroke="var(--ink)" stroke-width="3"/>
+  <path d="M60 18 L100 32 V70 C100 100 82 120 60 130 C38 120 20 100 20 70 V32 Z" fill="none" stroke="var(--ink)" stroke-opacity=".25" stroke-width="1.5"/>
+  <text x="60" y="84" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,sans-serif" font-weight="700" font-size="34" fill="var(--ink)">${Math.round(p*100)}%</text>
+  </svg>`;
+}
+function renderToday(){
+  const k=todayKey(),w=curWeek(),p=readiness(),nx=nextSession(),t=totals(k),g=(S.days[k]?.glucose||[]);
+  const last=[...g].sort((a,b)=>a.t<b.t?1:-1)[0];
+  const hasTests=S.profile.tests.length>0;
+  $("#v-today").innerHTML=`
+  <div class="panel">
+    <div class="hero">
+      <div id="shieldBox">${shieldSVG(0)}</div>
+      <div>
+        <h2 style="margin:0 0 6px">Week ${w} of 16</h2>
+        <p class="muted small" style="margin-bottom:10px">${esc(PLAN[w-1].focus)}. ${hasTests?"The badge fills as your latest test scores close in on your targets.":"Log a first test to see how far you are from your targets."}</p>
+        ${EVENTS.map(e=>{const pc=evPct(e.k);return `<div class="ev"><span>${e.name}</span><div class="bar"><i style="width:${(pc||0)*100}%"></i></div><b>${evVal(e,latestOf(e.k))}</b></div>`}).join("")}
+      </div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="row between"><h3>Next workout</h3><button class="btn ghost sm" data-go="train">Plan</button></div>
+    ${nx?`<div class="kind">${nx.name}</div><p class="small">${esc(sessText(nx.w,nx.k))}</p>
+    <div class="row"><button class="btn sm" data-done="${nx.w}|${nx.k}">Mark done</button><button class="btn ghost sm" data-log-g="pre">Log sugar first</button></div>`
+    :`<p>All five sessions done this week. Rest up — next week unlocks ${w<16?"on schedule":"when you restart the plan"}.</p>`}
+  </div>
+  ${(()=>{const {due,fresh}=todaysCards(),n=due.length+fresh.length;return `<div class="panel"><div class="row between"><h3>Study</h3><span class="small muted">${streak()?`${streak()}-day streak`:""}</span></div>
+    ${n?`<p class="small">${n} Georgia law & procedure cards for today.</p><button class="btn sm" data-study-start>Start cards</button>`:`<p class="small muted" style="margin:0">Today's cards are done.</p>`}</div>`})()}
+  <div class="grid2">
+    <div class="panel">
+      <div class="label">Blood sugar</div>
+      ${last?`<div class="gv ${gClass(last.v)}" style="font-size:34px;margin:6px 0 2px">${gDisp(last.v)}</div><div class="small muted">${gUnit()} at ${esc(last.t)}</div>`:`<p class="small muted" style="margin:8px 0">Nothing logged today.</p>`}
+      <button class="btn sm" style="margin-top:10px;width:100%" data-log-g="">Log reading</button>
+    </div>
+    <div class="panel">
+      <div class="label">Carbs today</div>
+      <div class="stat" style="font-size:34px;margin:6px 0 2px">${Math.round(t.carbs)}<span class="small muted" style="font-family:var(--body)"> g</span></div>
+      <div class="small muted">${Math.round(t.calories)} cal · ${Math.round(t.protein)} g protein</div>
+      <button class="btn sm" style="margin-top:10px;width:100%" data-log-f>Log food</button>
+    </div>
+  </div>
+  ${waterPanel(k)}${todayReminders()}`;
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{const r=$("#shieldBox .fill");if(r)r.style.transform=`translateY(${150-150*p}px)`}));
+}
+let viewWeek=null;
+function renderTrain(){
+  const cw=curWeek();if(viewWeek==null)viewWeek=cw;const w=viewWeek,p=PLAN[w-1];
+  $("#v-train").innerHTML=`
+  <h2>Training plan</h2>
+  <div class="panel">
+    <div class="weeknav">
+      <button class="btn ghost sm" data-wk="-1" ${w<=1?"disabled":""} aria-label="Previous week">‹</button>
+      <div style="text-align:center"><div class="kind" style="font-size:22px">Week ${w}${w===cw?" · this week":""}</div><div class="small muted">${esc(p.focus)}</div></div>
+      <button class="btn ghost sm" data-wk="1" ${w>=16?"disabled":""} aria-label="Next week">›</button>
+    </div>
+    <div class="week-strip" aria-hidden="true">${PLAN.map((_,i)=>{const d=weekDone(i+1);return `<i class="${d===5?"full":d?"part":""} ${i+1===cw?"cur":""}"></i>`}).join("")}</div>
+    <p class="small muted" style="margin:6px 0 4px">${weekDone(w)} of 5 sessions done. Space runs and strength across the week — no hard days back to back.</p>
+    ${SESSIONS.map(([k,name])=>{const on=!!S.profile.done[doneKey(w,k)];const body=k[0]==="r"?esc(p.runs[+k[1]]):p.str.map(esc).join("<br>");
+      return `<div class="sess ${on?"done":""}"><button class="check ${on?"on":""}" data-done="${w}|${k}" aria-pressed="${on}" aria-label="${name} done">${on?"✓":""}</button>
+      <div class="what"><div class="kind">${name}</div><div class="small">${body}</div></div></div>`}).join("")}
+    ${p.test?`<button class="btn brass" style="margin-top:12px;width:100%" data-log-t>Record check-in results</button>`:""}
+  </div>
+  <div class="panel flat small">
+    <p style="margin:0">Warm up 5 minutes before every session and walk 5 to cool down. If a week feels too hard, repeat it — use the arrows to go back and keep logging there.</p>
+    <p class="note">Hard exercise moves blood sugar, sometimes for hours after. Log a reading before and after training, and check with your doctor on how to handle workouts with your sugar levels.</p>
+  </div>`;
+}
+function glucoseChart(){
+  const now=new Date(),start=new Date(now);start.setDate(start.getDate()-6);start.setHours(0,0,0,0);
+  const pts=[];for(const k in S.days){const d=parseDate(k);if(d>=start)(S.days[k].glucose||[]).forEach(r=>{const [h,m]=(r.t||"0:0").split(":").map(Number);const ts=new Date(d);ts.setHours(h,m);pts.push({x:ts,v:r.v})})}
+  const W=340,H=170,L=30,R=6,T=8,B=22,span=7*864e5;
+  const maxV=Math.max(300,...pts.map(p=>p.v))+10,minV=40;
+  const X=x=>L+(x-start)/span*(W-L-R),Y=v=>T+(1-(v-minV)/(maxV-minV))*(H-T-B);
+  const ticks=[70,120,180,250].filter(v=>v<maxV);
+  let s=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Blood sugar over the last 7 days">`;
+  s+=`<rect x="${L}" y="${Y(S.profile.high)}" width="${W-L-R}" height="${Y(S.profile.low)-Y(S.profile.high)}" fill="var(--ok)" opacity=".12"/>`;
+  ticks.forEach(v=>{s+=`<line x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)" stroke-width="1"/><text x="${L-4}" y="${Y(v)+4}" text-anchor="end" font-size="10" fill="var(--muted)">${gDisp(v)}</text>`});
+  for(let i=0;i<7;i++){const d=new Date(start);d.setDate(d.getDate()+i);s+=`<text x="${X(d)+ (W-L-R)/14}" y="${H-6}" text-anchor="middle" font-size="10" fill="var(--muted)">${d.toLocaleDateString(undefined,{weekday:"narrow"})}</text>`}
+  const sorted=pts.sort((a,b)=>a.x-b.x);
+  if(sorted.length>1)s+=`<polyline fill="none" stroke="var(--muted)" stroke-opacity=".5" stroke-width="1.5" points="${sorted.map(p=>`${X(p.x)},${Y(p.v)}`).join(" ")}"/>`;
+  sorted.forEach(p=>{const c=gClass(p.v);s+=`<circle cx="${X(p.x)}" cy="${Y(p.v)}" r="4" fill="var(--${c==="in"?"ok":c})"/>`});
+  return {svg:s+"</svg>",pts:sorted};
+}
+function renderSugar(){
+  const {svg,pts}=glucoseChart();
+  const avg=pts.length?pts.reduce((a,p)=>a+p.v,0)/pts.length:null;
+  const inR=pts.length?pts.filter(p=>gClass(p.v)==="in").length/pts.length:null;
+  const lows=pts.filter(p=>p.v<S.profile.low).length;
+  const keys=Object.keys(S.days).filter(k=>(S.days[k].glucose||[]).length).sort().reverse().slice(0,10);
+  $("#v-sugar").innerHTML=`
+  <div class="row between"><h2>Blood sugar</h2><button class="btn" data-log-g="">Log reading</button></div>
+  <div class="panel">
+    <div class="grid2" style="grid-template-columns:repeat(3,1fr);margin-bottom:10px">
+      <div><div class="label">7-day avg</div><div class="stat">${avg?gDisp(avg):"—"}</div></div>
+      <div><div class="label">In range</div><div class="stat">${inR!=null?Math.round(inR*100)+"%":"—"}</div></div>
+      <div><div class="label">Lows</div><div class="stat" style="color:${lows?"var(--low)":"inherit"}">${pts.length?lows:"—"}</div></div>
+    </div>
+    ${svg}
+    <p class="small muted" style="margin:6px 0 0">Green band is your range: ${gDisp(S.profile.low)}–${gDisp(S.profile.high)} ${gUnit()}. Change it under Goals.</p>
+  </div>
+  ${keys.length?keys.map(k=>`<div class="panel"><h3>${k===todayKey()?"Today":niceDate(k)}</h3>
+    ${[...S.days[k].glucose].sort((a,b)=>a.t<b.t?1:-1).map(r=>`<div class="item"><div><span class="gv ${gClass(r.v)}">${gDisp(r.v)}</span> <span class="small muted">${gUnit()} · ${esc(r.t)}</span><div><span class="tag">${esc((GTAGS.find(g=>g[0]===r.tag)||["","Other"])[1])}</span> ${r.note?`<span class="small muted">${esc(r.note)}</span>`:""}</div></div><button class="x" data-del-g="${k}|${r.id}" aria-label="Delete reading">×</button></div>`).join("")}
+  </div>`).join(""):`<div class="panel flat"><p style="margin:0">Log your first reading to start the chart. Tag it (fasting, after a meal, before a workout) so patterns show up later.</p></div>`}`;
+}
+let foodDay=null;
+function renderFood(){
+  const k=foodDay||todayKey(),t=totals(k),m=S.profile.macro,items=S.days[k]?.food||[];
+  const tgt=(v,x)=>m[x]?`<div class="bar ${x==="carbs"?"carb":""}" style="margin-top:6px"><i style="width:${Math.min(100,v/m[x]*100)}%"></i></div><div class="small muted">of ${m[x]}${x==="calories"?"":" g"}</div>`:"";
+  const d=parseDate(k);const prev=new Date(d);prev.setDate(d.getDate()-1);const next=new Date(d);next.setDate(d.getDate()+1);
+  $("#v-food").innerHTML=`
+  <div class="row between"><h2>Food</h2><button class="btn" data-log-f>Log food</button></div>
+  <div class="weeknav"><button class="btn ghost sm" data-fd="${keyOf(prev)}" aria-label="Previous day">‹</button><div class="kind">${k===todayKey()?"Today":niceDate(k)}</div><button class="btn ghost sm" data-fd="${keyOf(next)}" ${k>=todayKey()?"disabled":""} aria-label="Next day">›</button></div>
+  <div class="panel">
+    <div class="grid2" style="grid-template-columns:repeat(3,1fr)">
+      <div><div class="label">Carbs</div><div class="stat">${Math.round(t.carbs)} g</div>${tgt(t.carbs,"carbs")}</div>
+      <div><div class="label">Protein</div><div class="stat">${Math.round(t.protein)} g</div>${tgt(t.protein,"protein")}</div>
+      <div><div class="label">Calories</div><div class="stat">${Math.round(t.calories)}</div>${tgt(t.calories,"calories")}</div>
+    </div>
+    <p class="small muted" style="margin:10px 0 0">Net carbs ${Math.round(t.carbs-t.fiber)} g · Fiber ${Math.round(t.fiber)} g · Sugar ${Math.round(t.sugar)} g · Fat ${Math.round(t.fat)} g</p>
+  </div>
+  ${waterPanel(k)}
+  ${MEALS.map(meal=>{const list=items.filter(f=>f.meal===meal);if(!list.length)return "";const c=list.reduce((a,f)=>a+num(f.carbs),0);
+    return `<div class="panel"><div class="row between"><h3>${meal}</h3><span class="small muted">${Math.round(c)} g carbs</span></div>
+    ${list.map(f=>`<div class="item"><div><div>${esc(f.name)}</div><div class="small muted">${Math.round(num(f.carbs))} g carbs · ${Math.round(num(f.protein))} g protein · ${Math.round(num(f.calories))} cal</div></div><button class="x" data-del-f="${k}|${f.id}" aria-label="Delete ${esc(f.name)}">×</button></div>`).join("")}</div>`}).join("")}
+  ${items.length?"":`<div class="panel flat"><p style="margin:0">Nothing logged for this day. Search common foods, or enter the numbers from the label.</p></div>`}`;
+}
+function renderGoals(){
+  const P=S.profile,tests=[...P.tests].sort((a,b)=>a.date<b.date?1:-1);
+  $("#v-goals").innerHTML=`
+  <div class="row between"><h2>Goals & tests</h2><button class="btn brass" data-log-t>Record test</button></div>
+  <div class="panel">
+    <h3>Test history</h3>
+    ${tests.length?`<div class="scroll"><table><thead><tr><th>Date</th>${EVENTS.map(e=>`<th>${e.name}</th>`).join("")}<th></th></tr></thead><tbody>
+    ${tests.map(t=>`<tr><td>${esc(niceDate(t.date))}</td>${EVENTS.map(e=>`<td>${evVal(e,t[e.k]||null)}</td>`).join("")}<td><button class="x" data-del-t="${t.id}" aria-label="Delete test" style="background:none;border:0;color:var(--muted);cursor:pointer">×</button></td></tr>`).join("")}
+    <tr><td><b>Target</b></td>${EVENTS.map(e=>`<td><b>${evVal(e,P.targets[e.k])}</b></td>`).join("")}<td></td></tr>
+    </tbody></table></div>`:`<p class="small muted">No tests yet. Do a baseline now — however it goes, it's the number you'll beat. Check-in weeks (4, 8, 12, 16) remind you.</p>`}
+  </div>
+  <form class="panel" id="targetsForm">
+    <h3>Test targets</h3>
+    <p class="small muted">Defaults are common academy pass marks. Every department sets its own — swap in yours once you know them.</p>
+    <div class="grid2">
+      <div><label class="f">Push-ups (1 min)</label><input type="number" inputmode="numeric" name="pushups" value="${P.targets.pushups}"></div>
+      <div><label class="f">Sit-ups (1 min)</label><input type="number" inputmode="numeric" name="situps" value="${P.targets.situps}"></div>
+      <div><label class="f">1.5 mile (m:ss)</label><input type="text" inputmode="numeric" name="run15" value="${fmtTime(P.targets.run15)}"></div>
+      <div><label class="f">300 m (seconds)</label><input type="number" inputmode="numeric" name="sprint300" value="${P.targets.sprint300}"></div>
+    </div>
+    <h3 style="margin-top:18px">Blood sugar</h3>
+    <div class="chips" style="margin-bottom:4px">
+      <label><input type="radio" name="unit" value="mgdl" ${!isMmol()?"checked":""}><span>mg/dL</span></label>
+      <label><input type="radio" name="unit" value="mmol" ${isMmol()?"checked":""}><span>mmol/L</span></label>
+    </div>
+    <div class="grid2">
+      <div><label class="f">Low line</label><input type="number" step="any" name="low" value="${gDisp(P.low)}"></div>
+      <div><label class="f">High line</label><input type="number" step="any" name="high" value="${gDisp(P.high)}"></div>
+    </div>
+    <h3 style="margin-top:18px">Daily nutrition targets</h3>
+    <p class="small muted">Optional. Leave blank to just see totals.</p>
+    <div class="grid2" style="grid-template-columns:repeat(3,1fr)">
+      <div><label class="f">Carbs (g)</label><input type="number" name="carbs" value="${P.macro.carbs}"></div>
+      <div><label class="f">Protein (g)</label><input type="number" name="protein" value="${P.macro.protein}"></div>
+      <div><label class="f">Calories</label><input type="number" name="calories" value="${P.macro.calories}"></div>
+    </div>
+    <h3 style="margin-top:18px">Water</h3>
+    <div class="chips" style="margin-bottom:4px">
+      <label><input type="radio" name="wunit" value="oz" ${wUnit()==="oz"?"checked":""}><span>oz</span></label>
+      <label><input type="radio" name="wunit" value="ml" ${wUnit()==="ml"?"checked":""}><span>ml</span></label>
+    </div>
+    <label class="f">Daily goal (${wUnit()})</label><input type="number" name="wgoal" value="${wDisp(P.water.goal)}">
+    <div class="actions"><button class="btn" type="submit">Save goals</button></div>
+  </form>
+  <div class="panel">
+    <h3>Plan</h3>
+    <p class="small">Started ${esc(niceDate(P.startDate))}. You're in week ${curWeek()} of 16.</p>
+    <button class="btn ghost sm" id="restartBtn">Restart plan from this week</button>
+  </div>
+  <div class="panel">
+    <h3>Backup</h3>
+    <p class="small muted">Everything lives on this phone only — no account, no internet needed. Download a backup now and then so a phone swap or cleared browser can't wipe it.</p>
+    <div class="row"><button class="btn ghost sm" data-backup>Download backup</button><label class="btn ghost sm">Restore backup<input type="file" accept="application/json,.json" id="restoreIn" hidden></label></div>
+  </div>`;
+  $("#targetsForm").onsubmit=e=>{e.preventDefault();const f=new FormData(e.target);
+    const unit=f.get("unit");const conv=v=>unit==="mmol"?num(v)*18:num(v);
+    P.targets={pushups:num(f.get("pushups")),situps:num(f.get("situps")),run15:parseMMSS(f.get("run15"))||P.targets.run15,sprint300:num(f.get("sprint300"))};
+    const lo=conv(f.get("low")),hi=conv(f.get("high"));
+    if(unit===P.unit){if(lo>0&&hi>lo){P.low=Math.round(lo);P.high=Math.round(hi)}}
+    P.unit=unit;
+    P.macro={carbs:f.get("carbs"),protein:f.get("protein"),calories:f.get("calories")};
+    const wg=toMl(num(f.get("wgoal")));if(wg>0)P.water.goal=Math.round(wg);P.water.unit=f.get("wunit")||"oz";
+    saveProfile();renderAll();toast("Goals saved")};
+  $("#restartBtn").onclick=()=>{if(confirm("Restart the 16-week plan from today? Your test history and logs stay.")){P.startDate=todayKey();P.done={};viewWeek=null;saveProfile();renderAll();toast("Plan restarted")}};
+}
+function renderAll(){renderToday();renderTrain();renderSugar();renderFood();renderSched();renderGoals();if(!sess)renderStudy()}
+
+/* ---------- sheets ---------- */
+const sheet=$("#sheet"),sf=$("#sheetForm");
+function openSheet(html,onSubmit,after){sf.innerHTML=html+`<div class="actions"><button type="button" class="btn ghost" id="cancelBtn">Cancel</button><button class="btn" type="submit">Save</button></div>`;
+  sf.onsubmit=e=>{e.preventDefault();if(onSubmit(new FormData(sf))!==false)sheet.close()};
+  $("#cancelBtn").onclick=()=>sheet.close();sheet.showModal();after&&after();}
+sheet.addEventListener("click",e=>{if(e.target===sheet)sheet.close()});
+
+function logGlucose(tag){
+  openSheet(`<h3>Log blood sugar</h3>
+  <label class="f" for="gv">Reading (${gUnit()})</label><input id="gv" type="number" inputmode="decimal" step="any" name="v" required autofocus>
+  <label class="f">When</label><div class="chips">${GTAGS.map(([k,n])=>`<label><input type="radio" name="tag" value="${k}" ${k===(tag||"other")?"checked":""}><span>${n}</span></label>`).join("")}</div>
+  <div class="grid2"><div><label class="f">Date</label><input type="date" name="d" value="${todayKey()}" max="${todayKey()}"></div><div><label class="f">Time</label><input type="time" name="t" value="${nowTime()}"></div></div>
+  <label class="f">Note (optional)</label><input type="text" name="note" placeholder="Felt shaky, took insulin, etc.">`,f=>{
+    const v=gIn(f.get("v"));if(!(v>10&&v<700)){toast("Enter a reading between "+(isMmol()?"1 and 38":"20 and 600"));return false}
+    const k=f.get("d")||todayKey();day(k).glucose.push({id:uid(),t:f.get("t")||nowTime(),v:Math.round(v),tag:f.get("tag"),note:String(f.get("note")||"").slice(0,140)});
+    saveDay(k);renderAll();toast(`Logged ${gDisp(v)} ${gUnit()}`)});
+}
+function guessMeal(){const h=new Date().getHours();return h<11?"Breakfast":h<15?"Lunch":h<20?"Dinner":"Snack"}
+function logFood(){
+  const favs=S.profile.favorites||[];
+  openSheet(`<h3>Log food</h3>
+  <div class="chips">${MEALS.map(m=>`<label><input type="radio" name="meal" value="${m}" ${m===guessMeal()?"checked":""}><span>${m}</span></label>`).join("")}</div>
+  ${favs.length?`<label class="f">Quick add</label><div class="qa">${favs.map((f,i)=>`<button type="button" data-fav="${i}">${esc(f.name)}</button>`).join("")}</div>`:""}
+  <label class="f" for="fs">Search common foods</label><input id="fs" type="text" placeholder="rice, banana, chicken…" autocomplete="off">
+  <div class="qa" id="fsr" style="margin-top:6px"></div>
+  <div style="display:grid;grid-template-columns:1fr 92px;gap:10px"><div><label class="f" for="fn">Food</label><input id="fn" type="text" name="name" required></div><div><label class="f" for="fsv">Servings</label><input id="fsv" type="number" step="any" inputmode="decimal" name="serv" value="1"></div></div>
+  <div class="grid2" style="grid-template-columns:repeat(3,1fr)">
+    <div><label class="f">Carbs g</label><input type="number" step="any" inputmode="decimal" name="carbs"></div>
+    <div><label class="f">Fiber g</label><input type="number" step="any" inputmode="decimal" name="fiber"></div>
+    <div><label class="f">Sugar g</label><input type="number" step="any" inputmode="decimal" name="sugar"></div>
+    <div><label class="f">Protein g</label><input type="number" step="any" inputmode="decimal" name="protein"></div>
+    <div><label class="f">Fat g</label><input type="number" step="any" inputmode="decimal" name="fat"></div>
+    <div><label class="f">Calories</label><input type="number" step="any" inputmode="decimal" name="calories"></div>
+  </div>
+  <label class="row small" style="margin-top:12px;gap:8px"><input type="checkbox" name="fav"> Save to quick add</label>`,f=>{
+    const name=String(f.get("name")||"").trim();if(!name){toast("Add a food name");return false}
+    const k=foodDay||todayKey(),sv=num(f.get("serv"))||1,base={name:name.slice(0,80)},F=["carbs","fiber","sugar","protein","fat","calories"];
+    F.forEach(x=>base[x]=num(f.get(x)));
+    const item={id:uid(),meal:f.get("meal"),name:base.name+(sv!==1?` ×${sv}`:"")};
+    F.forEach(x=>item[x]=Math.round(base[x]*sv*10)/10);
+    day(k).food.push(item);saveDay(k);
+    if(f.get("fav")&&!favs.some(x=>x.name===base.name)){S.profile.favorites=[base,...favs].slice(0,20);saveProfile()}
+    renderAll();toast(`Logged ${item.name}`)},()=>{
+    const set=o=>{for(const x in o){const el=sf.elements[x];if(el)el.value=o[x]}};
+    sf.querySelectorAll("[data-fav]").forEach(b=>b.onclick=()=>set(favs[+b.dataset.fav]));
+    const fs=$("#fs"),fr=$("#fsr");fs.oninput=()=>{const q=fs.value.trim().toLowerCase();if(!q){fr.innerHTML="";return}
+      const hits=FOODS.map((x,i)=>[x,i]).filter(([x])=>x[0].toLowerCase().includes(q)).slice(0,8);
+      fr.innerHTML=hits.length?hits.map(([x,i])=>`<button type="button" data-lib="${i}">${esc(x[0])}</button>`).join(""):`<span class="small muted">No match. Enter it by hand below.</span>`;
+      fr.querySelectorAll("[data-lib]").forEach(b=>b.onclick=()=>{const x=FOODS[+b.dataset.lib];set({name:x[0],calories:x[1],carbs:x[2],fiber:x[3],sugar:x[4],protein:x[5],fat:x[6]});fr.innerHTML="";fs.value=""})};
+  });
+}
+function logTest(){
+  openSheet(`<h3>Record test results</h3>
+  <p class="small muted">Fill in whichever events you did.</p>
+  <label class="f">Date</label><input type="date" name="d" value="${todayKey()}" max="${todayKey()}">
+  <div class="grid2">
+    <div><label class="f">Push-ups (1 min)</label><input type="number" inputmode="numeric" name="pushups"></div>
+    <div><label class="f">Sit-ups (1 min)</label><input type="number" inputmode="numeric" name="situps"></div>
+    <div><label class="f">1.5 mile (m:ss)</label><input type="text" inputmode="numeric" name="run15" placeholder="14:30"></div>
+    <div><label class="f">300 m (seconds)</label><input type="number" inputmode="decimal" step="any" name="sprint300"></div>
+  </div>`,f=>{
+    const t={id:uid(),date:f.get("d")||todayKey(),pushups:num(f.get("pushups")),situps:num(f.get("situps")),run15:parseMMSS(f.get("run15"))||0,sprint300:num(f.get("sprint300"))};
+    if(!t.pushups&&!t.situps&&!t.run15&&!t.sprint300){toast("Enter at least one result");return false}
+    S.profile.tests.push(t);saveProfile();renderAll();toast("Test recorded")});
+}
+
+/* ---------- events ---------- */
+let moreSub="sched";
+function show(tab){if(tab==="sched"||tab==="goals"){moreSub=tab;tab="more"}
+  document.querySelectorAll("nav.tabs button").forEach(b=>b.dataset.tab===tab?b.setAttribute("aria-current","page"):b.removeAttribute("aria-current"));
+  ["today","train","sugar","food","study","more"].forEach(t=>$("#v-"+t).hidden=t!==tab);
+  $("#v-sched").hidden=moreSub!=="sched";$("#v-goals").hidden=moreSub!=="goals";
+  document.querySelectorAll("[data-sub]").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.sub===moreSub)));
+  if(tab==="today")renderToday();window.scrollTo(0,0)}
+document.querySelector("nav.tabs").addEventListener("click",e=>{const b=e.target.closest("button");if(b)show(b.dataset.tab)});
+document.addEventListener("click",e=>{
+  const t=e.target.closest("[data-go],[data-done],[data-log-g],[data-log-f],[data-log-t],[data-wk],[data-fd],[data-del-g],[data-del-f],[data-del-t],[data-water],[data-water-undo],[data-cal],[data-calm],[data-rem-add],[data-rem-del],[data-ics],[data-backup],[data-sub],[data-study-start],[data-study-show],[data-study-ans],[data-study-end],[data-study-home],[data-study-cat]");if(!t)return;
+  const ds=t.dataset;
+  if(ds.go)show(ds.go);
+  else if(ds.done){const [w,k]=ds.done.split("|");const key=doneKey(w,k);if(S.profile.done[key])delete S.profile.done[key];else{S.profile.done[key]=todayKey();toast("Nice work. Logged.")}saveProfile();renderAll()}
+  else if("logG" in ds)logGlucose(ds.logG);
+  else if("logF" in ds)logFood();
+  else if("logT" in ds)logTest();
+  else if(ds.wk){viewWeek=Math.min(16,Math.max(1,viewWeek+ +ds.wk));renderTrain()}
+  else if(ds.fd){foodDay=ds.fd===todayKey()?null:ds.fd;renderFood()}
+  else if(ds.delG){const [k,id]=ds.delG.split("|");if(confirm("Delete this reading?")){day(k).glucose=day(k).glucose.filter(r=>r.id!==id);saveDay(k);renderAll()}}
+  else if(ds.delF){const [k,id]=ds.delF.split("|");day(k).food=day(k).food.filter(r=>r.id!==id);saveDay(k);renderAll()}
+  else if(ds.delT){if(confirm("Delete this test?")){S.profile.tests=S.profile.tests.filter(x=>x.id!==ds.delT);saveProfile();renderAll()}}
+  else if(ds.water){const [k,v]=ds.water.split("|");day(k).water.push(Math.round(toMl(+v)));saveDay(k);renderAll();toast(`+${v} ${wUnit()}`)}
+  else if(ds.waterUndo){day(ds.waterUndo).water.pop();saveDay(ds.waterUndo);renderAll()}
+  else if(ds.cal){const k=ds.cal,sc=S.profile.sched,pat=baseType(k),nx=dayType(k)==="work"?"off":"work";if(nx===pat)delete sc.days[k];else sc.days[k]=nx;saveProfile();renderSched();renderToday()}
+  else if(ds.calm){calMonth=new Date(calMonth.getFullYear(),calMonth.getMonth()+ +ds.calm,1);renderSched()}
+  else if(ds.remAdd){S.profile.sched[ds.remAdd].push({t:"12:00",what:"Drink water"});S.profile.sched[ds.remAdd].sort((a,b)=>a.t<b.t?-1:1);saveProfile();renderSched();renderToday()}
+  else if(ds.remDel){const [type,i]=ds.remDel.split("|");S.profile.sched[type].splice(+i,1);saveProfile();renderSched();renderToday()}
+  else if("ics" in ds)exportIcs();
+  else if(ds.sub)show(ds.sub);
+  else if("studyStart" in ds){const {due,fresh}=todaysCards();startSession([...due,...fresh],"Today's cards")}
+  else if("studyShow" in ds){sess.shown=true;renderStudy()}
+  else if(ds.studyAns!=null)answer(ds.studyAns==="1");
+  else if("studyEnd" in ds){sess=null;renderStudy()}
+  else if("studyHome" in ds)renderStudy();
+  else if(ds.studyCat)startSession(DECK.filter(c=>c[1]===ds.studyCat).map(c=>c[0]),ds.studyCat);
+  else if("backup" in ds){downloadBlob(new Blob([JSON.stringify(S)],{type:"application/json"}),`academy-ready-backup-${todayKey()}.json`);toast("Backup downloaded")}
+});
+
+$("#hdrDate").textContent=new Date().toLocaleDateString(undefined,{weekday:"long",month:"short",day:"numeric"});
+document.addEventListener("change",e=>{const t=e.target,ds=t.dataset||{};
+  if(ds.rem){const [type,i,f]=ds.rem.split("|"),r=S.profile.sched[type][+i];if(!r)return;r[f]=String(t.value).slice(0,60);if(f==="t")S.profile.sched[type].sort((a,b)=>a.t<b.t?-1:1);saveProfile();renderSched();renderToday()}
+  else if(ds.pat!=null){const d=+ds.pat,p=S.profile.sched.pattern;S.profile.sched.pattern=t.checked?[...new Set([...p,d])]:p.filter(x=>x!==d);saveProfile();renderSched();renderToday()}
+  else if("weeks" in ds){S.profile.sched.weeks=+t.value;saveProfile()}
+  else if(ds.mode){S.profile.sched.mode=ds.mode;S.profile.sched.days={};saveProfile();renderSched();renderToday()}
+  else if("anchor" in ds&&t.value){S.profile.sched.anchor=t.value;S.profile.sched.days={};saveProfile();renderSched();renderToday()}
+  else if("perday" in ds){S.profile.study.perDay=+t.value;saveProfile();renderStudy();renderToday()}
+  else if(t.id==="restoreIn"&&t.files[0]){const rd=new FileReader();rd.onload=()=>{try{const c=JSON.parse(rd.result);if(!c.profile||!c.days)throw 0;
+      if(confirm("Replace everything in the app with this backup?")){const D=DEFAULTS();S={profile:{...D,...c.profile,water:{...D.water,...(c.profile.water||{})},sched:{...D.sched,...(c.profile.sched||{})},study:{...D.study,...(c.profile.study||{})}},days:c.days};cache();renderAll();toast("Backup restored")}}
+    catch(err){toast("That file isn't an Academy Ready backup")}t.value=""};rd.readAsText(t.files[0])}
+});
+renderAll();
+if("serviceWorker" in navigator&&location.protocol.startsWith("http"))navigator.serviceWorker.register("sw.js").catch(()=>{});
+</script>
+</body>
+</html>
